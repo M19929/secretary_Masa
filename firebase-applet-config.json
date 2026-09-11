@@ -1,0 +1,12 @@
+{
+  "projectId": "masa-app-4c1f3",
+  "appId": "1:571234591004:web:eb8331211c90d514a41ad9",
+  "apiKey": "AIzaSyBJFxI3bAPyzoINf_mj4DkYcKWBxUdcm-0",
+  "authDomain": "masa-app-4c1f3.firebaseapp.com",
+  "firestoreDatabaseId": "default",
+  "storageBucket": "masa-app-4c1f3.firebasestorage.app",
+  "messagingSenderId": "571234591004",
+  "measurementId": "G-2BM4QT4PRG",
+  "oAuthClientId": "PUT_NEW_OAUTH_CLIENT_ID_HERE",
+  "recaptchaSiteKey": ""
+}

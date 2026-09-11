@@ -1,0 +1,199 @@
+import fs from 'fs';
+import path from 'path';
+import sharp from 'sharp';
+
+// SVG Definition of the exact Masa Dr. Mohamed Fawzy logo uploaded by user
+const logoSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <defs>
+    <!-- Rich ocean dental blue radial gradient matching user's photo -->
+    <radialGradient id="oceanBg" cx="50%" cy="42%" r="68%">
+      <stop offset="0%" stop-color="#2a7eb6" />
+      <stop offset="30%" stop-color="#1d6696" />
+      <stop offset="65%" stop-color="#124a73" />
+      <stop offset="90%" stop-color="#0a3150" />
+      <stop offset="100%" stop-color="#062238" />
+    </radialGradient>
+
+    <!-- Center cyan illumination behind the white emblem -->
+    <radialGradient id="centerGlow" cx="50%" cy="40%" r="42%">
+      <stop offset="0%" stop-color="#56b6f7" stop-opacity="0.25" />
+      <stop offset="50%" stop-color="#2478b0" stop-opacity="0.1" />
+      <stop offset="100%" stop-color="#062238" stop-opacity="0" />
+    </radialGradient>
+
+    <!-- Corner vignette shadow for depth -->
+    <radialGradient id="vignette" cx="50%" cy="50%" r="72%">
+      <stop offset="60%" stop-color="#000000" stop-opacity="0" />
+      <stop offset="88%" stop-color="#031627" stop-opacity="0.5" />
+      <stop offset="100%" stop-color="#010c17" stop-opacity="0.8" />
+    </radialGradient>
+
+    <!-- Subtle texture pattern resembling photo background -->
+    <filter id="subtleTexture" x="0%" y="0%" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="3" result="noise" />
+      <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 0.045 0" in="noise" result="coloredNoise" />
+      <feComposite operator="in" in2="SourceGraphic" />
+    </filter>
+  </defs>
+
+  <!-- Background Base -->
+  <rect width="1024" height="1024" fill="url(#oceanBg)" />
+  <!-- Center Glow -->
+  <rect width="1024" height="1024" fill="url(#centerGlow)" />
+  <!-- Vignette -->
+  <rect width="1024" height="1024" fill="url(#vignette)" />
+
+  <!-- Subtle organic background creases / geometric folds as seen in photo -->
+  <g opacity="0.06" stroke="#ffffff" stroke-width="2" fill="none">
+    <path d="M 0,200 L 400,600 L 1024,300" />
+    <path d="M 150,0 L 500,500 L 200,1024" />
+    <path d="M 800,0 L 550,650 L 900,1024" />
+    <path d="M 0,850 L 600,450 L 1024,800" />
+  </g>
+
+  <!-- ==================== MAIN LOGO EMBLEM ==================== -->
+  <g id="main-emblem">
+
+    <!-- 1. TOOTH GRAPHIC (Left Solid Tooth + Right 8 Implant Slices) -->
+    <g transform="translate(512, 400) scale(1.65)">
+      <!-- Left Solid Tooth Half -->
+      <!-- Smooth crown cusp, waist, and root with graceful anatomical curve -->
+      <path d="M -16,-122
+               C -42,-126 -80,-118 -108,-85
+               C -138,-48 -132,18 -118,72
+               C -106,116 -82,176 -46,192
+               C -26,200 -18,184 -18,162
+               C -18,110 -16,-24 -16,-122 Z"
+            fill="#FFFFFF" />
+
+      <!-- Right 8 Sliced Ribs / Slats (representing Dental Implant Thread) -->
+      <!-- Rib 1: Top crown cusp -->
+      <path d="M 15,-94 C 42,-82 76,-56 90,-34 C 76,-28 46,-26 15,-27 Z" fill="#FFFFFF" />
+      
+      <!-- Rib 2: Upper crown equator -->
+      <path d="M 15,-13 C 50,-11 86,-5 101,11 C 89,23 48,25 15,24 Z" fill="#FFFFFF" />
+      
+      <!-- Rib 3: Mid crown / widest segment -->
+      <path d="M 15,38 C 47,38 82,44 94,58 C 82,70 45,71 15,70 Z" fill="#FFFFFF" />
+      
+      <!-- Rib 4: Cervical neck / start of root -->
+      <path d="M 15,84 C 42,84 70,90 80,102 C 68,112 40,113 15,112 Z" fill="#FFFFFF" />
+      
+      <!-- Rib 5: Upper root taper -->
+      <path d="M 15,126 C 36,126 59,132 67,142 C 57,151 34,152 15,151 Z" fill="#FFFFFF" />
+      
+      <!-- Rib 6: Mid root taper -->
+      <path d="M 15,165 C 32,165 48,170 54,179 C 45,187 28,188 15,187 Z" fill="#FFFFFF" />
+      
+      <!-- Rib 7: Lower root taper -->
+      <path d="M 15,200 C 27,200 38,204 42,212 C 34,219 22,220 15,219 Z" fill="#FFFFFF" />
+      
+      <!-- Rib 8: Root tip / apex -->
+      <path d="M 15,232 C 22,232 29,235 32,241 C 26,247 18,248 15,247 Z" fill="#FFFFFF" />
+    </g>
+
+    <!-- 2. 'masa' CUSTOM WORDMARK -->
+    <!-- Reconstructed with precision bezier curves matching the original font -->
+    <g transform="translate(512, 690)">
+      <g fill="#FFFFFF">
+        <!-- Letter 'm' (custom display serif with flaring terminals) -->
+        <path d="M -218, 5 C -218, -32 -202, -48 -178, -48 C -160, -48 -146, -37 -139, -20 C -132, -37 -115, -48 -94, -48 C -70, -48 -58, -30 -58, 2 L -58, 48 L -74, 48 L -74, 4 C -74, -20 -83, -32 -99, -32 C -115, -32 -127, -19 -127, 4 L -127, 48 L -143, 48 L -143, 4 C -143, -20 -152, -32 -168, -32 C -184, -32 -196, -19 -196, 4 L -196, 48 L -218, 48 C -218, 48 -224, 48 -224, 40 C -224, 32 -218, 30 -218, 20 Z" />
+        
+        <!-- Letter 'a' (first) -->
+        <path d="M -44, -3 C -44, -34 -24, -50 4, -50 C 26, -50 38, -38 41, -24 L 41, -47 L 57, -47 L 57, 48 L 41, 48 L 41, 35 C 34, 44 22, 50 4, 50 C -24, 50 -44, 32 -44, -3 Z M 41, -2 C 41, -24 26, -34 6, -34 C -13, -34 -26, -21 -26, -2 C -26, 17 -13, 34 6, 34 C 26, 34 41, 21 41, -2 Z" />
+
+        <!-- Letter 's' (distinctive sharp diagonal calligraphic curve) -->
+        <path d="M 75, 33 C 84, 43 97, 50 116, 50 C 141, 50 157, 36 157, 18 C 157, -1 141, -12 120, -20 C 93, -29 80, -37 80, -51 C 80, -65 94, -74 112, -74 C 127, -74 141, -67 150, -56 L 142, -44 C 134, -53 124, -59 112, -59 C 100, -59 93, -51 93, -42 C 93, -31 104, -25 126, -17 C 153, -8 169, 3 169, 19 C 169, 44 146, 66 116, 66 C 94, 66 76, 55 66, 40 Z" />
+
+        <!-- Letter 'a' (second, with matching character & flourish) -->
+        <path d="M 186, -3 C 186, -34 206, -50 234, -50 C 256, -50 268, -38 271, -24 L 271, -47 L 287, -47 L 287, 48 L 271, 48 L 271, 35 C 264, 44 252, 50 234, 50 C 206, 50 186, 32 186, -3 Z M 271, -2 C 271, -24 256, -34 236, -34 C 217, -34 204, -21 204, -2 C 204, 17 217, 34 236, 34 C 256, 34 271, 21 271, -2 Z" />
+      </g>
+    </g>
+
+    <!-- 3. 'DR.MOHAMED FAWZY' SUBTITLE -->
+    <g transform="translate(512, 792)">
+      <text x="0" y="0"
+            text-anchor="middle"
+            font-family="'Cairo', 'Segoe UI', -apple-system, sans-serif"
+            font-weight="800"
+            font-size="34"
+            fill="#FFFFFF"
+            letter-spacing="9"
+            opacity="0.95">DR.MOHAMED FAWZY</text>
+    </g>
+
+  </g>
+</svg>
+`;
+
+async function generateIcons() {
+  console.log('Generating logo icons from uploaded reference...');
+
+  const svgBuffer = Buffer.from(logoSvg);
+
+  // Save SVG files
+  fs.writeFileSync('public/assets/masa_logo.svg', logoSvg);
+  fs.writeFileSync('public/assets/masa_icon.svg', logoSvg);
+  if (fs.existsSync('dist/assets')) {
+    fs.writeFileSync('dist/assets/masa_logo.svg', logoSvg);
+    fs.writeFileSync('dist/assets/masa_icon.svg', logoSvg);
+  }
+
+  // Define destinations
+  const outputs = [
+    // 512x512 Master App Icon for Flutter
+    { path: 'flutter_app/assets/icon/app_icon.png', size: 512 },
+    
+    // Web PWA Icons & Favicon
+    { path: 'public/icon-512.png', size: 512 },
+    { path: 'public/icon-192.png', size: 192 },
+    { path: 'public/apple-touch-icon.png', size: 180 },
+    { path: 'public/favicon.png', size: 64 },
+    { path: 'public/favicon.ico', size: 48 },
+
+    // Android Launcher Icons (mipmap)
+    { path: 'flutter_app/android/app/src/main/res/mipmap-mdpi/launcher_icon.png', size: 48 },
+    { path: 'flutter_app/android/app/src/main/res/mipmap-mdpi/ic_launcher.png', size: 48 },
+
+    { path: 'flutter_app/android/app/src/main/res/mipmap-hdpi/launcher_icon.png', size: 72 },
+    { path: 'flutter_app/android/app/src/main/res/mipmap-hdpi/ic_launcher.png', size: 72 },
+
+    { path: 'flutter_app/android/app/src/main/res/mipmap-xhdpi/launcher_icon.png', size: 96 },
+    { path: 'flutter_app/android/app/src/main/res/mipmap-xhdpi/ic_launcher.png', size: 96 },
+
+    { path: 'flutter_app/android/app/src/main/res/mipmap-xxhdpi/launcher_icon.png', size: 144 },
+    { path: 'flutter_app/android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png', size: 144 },
+
+    { path: 'flutter_app/android/app/src/main/res/mipmap-xxxhdpi/launcher_icon.png', size: 192 },
+    { path: 'flutter_app/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png', size: 192 },
+  ];
+
+  for (const item of outputs) {
+    const dir = path.dirname(item.path);
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
+    await sharp(svgBuffer)
+      .resize(item.size, item.size)
+      .png({ quality: 100, compressionLevel: 9 })
+      .toFile(item.path);
+    console.log(`Generated: ${item.path} (${item.size}x${item.size})`);
+    
+    // Also copy to dist if dist exists
+    if (item.path.startsWith('public/') && fs.existsSync('dist')) {
+      const distTarget = item.path.replace('public/', 'dist/');
+      await sharp(svgBuffer)
+        .resize(item.size, item.size)
+        .png({ quality: 100, compressionLevel: 9 })
+        .toFile(distTarget);
+      console.log(`Synced to dist: ${distTarget}`);
+    }
+  }
+
+  console.log('All icons generated successfully!');
+}
+
+generateIcons().catch(err => {
+  console.error('Error generating icons:', err);
+  process.exit(1);
+});

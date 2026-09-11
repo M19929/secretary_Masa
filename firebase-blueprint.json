@@ -1,0 +1,70 @@
+{
+  "entities": {
+    "users": {
+      "fields": {
+        "id": { "type": "string", "description": "Unique user ID" },
+        "name": { "type": "string", "description": "Full name" },
+        "phone": { "type": "string", "description": "Egyptian phone number" },
+        "email": { "type": "string", "description": "Optional email" },
+        "nationalId": { "type": "string", "description": "National ID" },
+        "role": { "type": "string", "description": "Role: patient, secretary, or admin" },
+        "gender": { "type": "string", "description": "Gender: male or female" },
+        "bloodType": { "type": "string", "description": "Blood type" },
+        "memberSince": { "type": "string", "description": "Registration date" },
+        "createdAt": { "type": "string", "description": "Creation timestamp" }
+      }
+    },
+    "appointments": {
+      "fields": {
+        "id": { "type": "string", "description": "Appointment ID" },
+        "patientName": { "type": "string", "description": "Patient full name" },
+        "patientPhone": { "type": "string", "description": "Patient phone" },
+        "serviceId": { "type": "string", "description": "Selected service ID" },
+        "serviceName": { "type": "string", "description": "Service name" },
+        "doctorId": { "type": "string", "description": "Assigned doctor ID" },
+        "doctorName": { "type": "string", "description": "Doctor name" },
+        "doctorSpecialty": { "type": "string", "description": "Doctor specialty" },
+        "date": { "type": "string", "description": "Appointment date" },
+        "time": { "type": "string", "description": "Appointment slot time" },
+        "status": { "type": "string", "description": "Status: pending, confirmed, completed, cancelled" },
+        "notes": { "type": "string", "description": "Medical notes or symptoms" },
+        "price": { "type": "number", "description": "Service price" },
+        "createdAt": { "type": "string", "description": "Booking creation timestamp" }
+      }
+    },
+    "offers": {
+      "fields": {
+        "id": { "type": "string", "description": "Offer ID" },
+        "title": { "type": "string", "description": "Offer title" },
+        "description": { "type": "string", "description": "Offer description" },
+        "discountPercentage": { "type": "number", "description": "Discount percent" },
+        "originalPrice": { "type": "number", "description": "Original price before discount" },
+        "discountedPrice": { "type": "number", "description": "Discounted final price" },
+        "validUntil": { "type": "string", "description": "Expiry date" },
+        "active": { "type": "boolean", "description": "Is offer active" }
+      }
+    },
+    "notifications": {
+      "fields": {
+        "id": { "type": "string", "description": "Notification ID" },
+        "title": { "type": "string", "description": "Notification title" },
+        "message": { "type": "string", "description": "Notification message" },
+        "date": { "type": "string", "description": "Timestamp" },
+        "read": { "type": "boolean", "description": "Read status" },
+        "targetRole": { "type": "string", "description": "Target audience (all, patient, secretary)" },
+        "type": { "type": "string", "description": "Notification type: appointment, offer, system, announcement, private_message, followup" },
+        "patientPhone": { "type": "string", "description": "Target patient phone number for 1-on-1 private follow-up" },
+        "patientName": { "type": "string", "description": "Target patient name" },
+        "followupCategory": { "type": "string", "description": "Category: surgery, whitening, reminder, billing, general" }
+      }
+    },
+    "clinic_settings": {
+      "fields": {
+        "id": { "type": "string", "description": "Setting document ID (e.g. secretary_security)" },
+        "secretaryPassword": { "type": "string", "description": "Custom database password for secretary portal" },
+        "updatedAt": { "type": "string", "description": "Last updated timestamp" },
+        "updatedBy": { "type": "string", "description": "Admin or secretary user ID who updated the password" }
+      }
+    }
+  }
+}
